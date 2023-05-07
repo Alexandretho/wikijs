@@ -1,0 +1,27 @@
+version: '3'
+services:
+  db:
+    image: mysql:8
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=wikijs
+      - MYSQL_USER=wikijs
+      - MYSQL_PASSWORD=wikijs
+    volumes:
+      - mysql-data:/var/lib/mysql
+  app:
+    image: registry.dotgroup.com.br/dot/requarks-wiki:latest
+    environment:
+      - DB_TYPE=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=wikijs
+      - DB_USER=wikijs
+      - DB_PASS=wikijs
+      - NODE_ENV=production
+    ports:
+      - 3000:3000
+    links:
+      - db
+volumes:
+  mysql-data:
