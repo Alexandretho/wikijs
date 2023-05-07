@@ -1,27 +1,40 @@
-version: '3'
+version: '3.8'
+
 services:
+  wikijs:
+    image: requarks/wiki:2
+    depends_on:
+      - db
+    ports:
+      - "80:3000"
+    environment:
+      # Personalize essas variáveis de ambiente conforme necessário
+      DB_TYPE: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASS: example
+      DB_NAME: wiki
+      WIKI_ADMIN_EMAIL: admin@example.com
+      WIKI_ADMIN_PASSWORD: admin
+      WIKI_SITE_NAME: "Meu WikiJS"
+      WIKI_SITE_URL: "http://localhost:80"
+      WIKI_PRIVACY_POLICY_URL: "https://example.com/privacy"
+      WIKI_TERMS_OF_USE_URL: "https://example.com/terms"
+      NODE_ENV: production
+    volumes:
+      - wikijs-data:/var/wiki/data
+      - wikijs-backups:/var/wiki/backups
+
   db:
     image: mysql:8
     environment:
-      - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_DATABASE=wikijs
-      - MYSQL_USER=wikijs
-      - MYSQL_PASSWORD=wikijs
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: wiki
     volumes:
-      - mysql-data:/var/lib/mysql
-  app:
-    image: registry.dotgroup.com.br/dot/requarks-wiki:latest
-    environment:
-      - DB_TYPE=mysql
-      - DB_HOST=db
-      - DB_PORT=3306
-      - DB_NAME=wikijs
-      - DB_USER=wikijs
-      - DB_PASS=wikijs
-      - NODE_ENV=production
-    ports:
-      - 3000:3000
-    links:
-      - db
+      - db-data:/var/lib/mysql
+
 volumes:
-  mysql-data:
+  wikijs-data:
+  wikijs-backups:
+  db-data:
