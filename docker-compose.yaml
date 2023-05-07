@@ -3,8 +3,8 @@ version: '3.8'
 services:
   wikijs:
     image: requarks/wiki:2
-   # depends_on:
-  #    - db
+    depends_on:
+      - db
     ports:
       - "80:3000"
     environment:
@@ -26,13 +26,13 @@ services:
       - wikijs-data:/var/wiki/data
       - wikijs-backups:/var/wiki/backups
 
- # db:
- #   image: mysql:8
- #   environment:
- #     MYSQL_ROOT_PASSWORD: example
- #     MYSQL_DATABASE: wiki
- #   volumes:
- #     - db-data:/var/lib/mysql
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: wiki
+    volumes:
+      - db-data:/var/lib/mysql
 
 volumes:
   wikijs-data:
