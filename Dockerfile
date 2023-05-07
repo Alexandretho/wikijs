@@ -1,8 +1,17 @@
-FROM mysql:8
+# Use an official Nginx runtime as a parent image
+FROM nginx:latest
 
-ENV MYSQL_ROOT_PASSWORD=example
-ENV MYSQL_DATABASE=wiki
+# Set the working directory to the Nginx configuration directory
+WORKDIR /etc/nginx
 
-#EXPOSE 3306
+# Remove the default configuration file
+RUN rm nginx.conf
 
-CMD ["mysqld"]
+# Copy the custom configuration file from the host into the container
+COPY nginx.conf .
+
+# Expose port 80 for incoming HTTP traffic
+EXPOSE 80
+
+# Start Nginx when the container launches
+CMD ["nginx", "-g", "daemon off;"]
